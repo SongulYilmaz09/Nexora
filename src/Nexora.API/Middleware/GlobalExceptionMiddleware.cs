@@ -29,10 +29,11 @@ public class GlobalExceptionMiddleware
         context.Response.ContentType = "application/json";
 
         var statusCode = exception switch
-        {
-            InvalidOperationException => HttpStatusCode.Conflict,
-            _ => HttpStatusCode.InternalServerError
-        };
+{
+    InvalidOperationException => HttpStatusCode.Conflict,
+    UnauthorizedAccessException => HttpStatusCode.Unauthorized,
+    _ => HttpStatusCode.InternalServerError
+};
 
         context.Response.StatusCode = (int)statusCode;
 
