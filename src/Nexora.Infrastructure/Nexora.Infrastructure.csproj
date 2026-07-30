@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nexora.Application\Nexora.Application.csproj" />
+    <ProjectReference Include="..\Nexora.Persistence\Nexora.Persistence.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

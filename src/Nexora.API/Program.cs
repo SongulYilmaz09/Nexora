@@ -1,25 +1,26 @@
 using Nexora.Application.Interfaces;
 using Nexora.Infrastructure.Services;
+using Nexora.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Services
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Persistence
+builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-
     app.UseSwagger();
     app.UseSwaggerUI();
 }

@@ -1,12 +1,20 @@
 using Nexora.Application.DTOs.Users;
 using Nexora.Application.Interfaces;
 using Nexora.Domain.Entities;
+using Nexora.Persistence.Context;
 
 namespace Nexora.Infrastructure.Services;
 
 public class UserService : IUserService
 {
-    public Task CreateAsync(CreateUserRequest request)
+    private readonly NexoraDbContext _context;
+
+    public UserService(NexoraDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task CreateAsync(CreateUserRequest request)
     {
         var user = new User
         {
@@ -15,12 +23,11 @@ public class UserService : IUserService
             Email = request.Email,
 
             // Şimdilik hash yapmıyoruz.
-            // JWT/Auth sprintinde BCrypt ile hashleyeceğiz.
+            // Authentication sprintinde BCrypt kullanacağız.
             PasswordHash = request.Password
         };
 
-        Console.WriteLine($"User Created: {user.FirstName} {user.LastName}");
-
-        return Task.CompletedTask;
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
     }
 }
