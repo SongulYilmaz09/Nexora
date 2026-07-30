@@ -1,4 +1,5 @@
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Nexora.API.Middleware;
@@ -13,8 +14,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // OpenAPI
+// OpenAPI & Swagger
 builder.Services.AddOpenApi();
+
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+// MediatR
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(IUserService).Assembly);
+});
 
 // JWT Configuration
 builder.Services.Configure<JwtSettings>(
@@ -59,6 +70,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

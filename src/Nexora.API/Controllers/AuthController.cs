@@ -1,7 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nexora.Application.DTOs.Auth;
-using Nexora.Application.Interfaces;
+using Nexora.Application.Features.Auth.Login;
 
 namespace Nexora.API.Controllers;
 
@@ -9,17 +9,17 @@ namespace Nexora.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IMediator _mediator;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IMediator mediator)
     {
-        _authService = authService;
+        _mediator = mediator;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginCommand command)
     {
-        var response = await _authService.LoginAsync(request);
+        var response = await _mediator.Send(command);
 
         return Ok(response);
     }
