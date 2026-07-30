@@ -1,8 +1,8 @@
 namespace Nexora.Domain.Entities;
 
-public class User
+public class User : BaseEntity
 {
-    public Guid Id { get; set; }
+   
 
     public string FirstName { get; set; } = string.Empty;
 
@@ -12,5 +12,5 @@ public class User
 
     public string PasswordHash { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+   
 }
