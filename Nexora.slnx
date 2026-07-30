@@ -1,2 +1,9 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Nexora.API/Nexora.API.csproj" />
+    <Project Path="src/Nexora.Application/Nexora.Application.csproj" />
+    <Project Path="src/Nexora.Domain/Nexora.Domain.csproj" />
+    <Project Path="src/Nexora.Infrastructure/Nexora.Infrastructure.csproj" />
+    <Project Path="src/Nexora.Persistence/Nexora.Persistence.csproj" />
+  </Folder>
 </Solution>
