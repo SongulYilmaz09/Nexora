@@ -1,8 +1,10 @@
 using System.Text;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Nexora.API.Middleware;
+using Nexora.Application.Common.Behaviors;
 using Nexora.Application.Interfaces;
 using Nexora.Infrastructure.Configuration;
 using Nexora.Infrastructure.Services;
@@ -14,18 +16,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // OpenAPI
-// OpenAPI & Swagger
 builder.Services.AddOpenApi();
-
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
 // MediatR
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(IUserService).Assembly);
+
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+// FluentValidation
+builder.Services.AddValidatorsFromAssembly(typeof(IUserService).Assembly);
 
 // JWT Configuration
 builder.Services.Configure<JwtSettings>(
