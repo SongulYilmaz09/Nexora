@@ -11,4 +11,6 @@ public class NexoraDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
+
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }
