@@ -10,6 +10,7 @@ public class User : BaseEntity
 
     public string PasswordHash { get; set; } = string.Empty;
 
-    public ICollection<RefreshToken> RefreshTokens { get; set; }
-        = new List<RefreshToken>();
+    public ICollection<Project> OwnedProjects { get; set; } = new List<Project>();
+
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

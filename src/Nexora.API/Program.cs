@@ -6,17 +6,18 @@ using Microsoft.IdentityModel.Tokens;
 using Nexora.API.Middleware;
 using Nexora.Application.Common.Behaviors;
 using Nexora.Application.Interfaces;
+using Nexora.Application.Interfaces.Repositories;
 using Nexora.Infrastructure.Configuration;
 using Nexora.Infrastructure.Services;
 using Nexora.Persistence;
+using Nexora.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
 
-// OpenAPI
-builder.Services.AddOpenApi();
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -67,6 +68,8 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+
 // Database
 builder.Services.AddPersistence(builder.Configuration);
 
@@ -74,8 +77,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-
     app.UseSwagger();
     app.UseSwaggerUI();
 }
