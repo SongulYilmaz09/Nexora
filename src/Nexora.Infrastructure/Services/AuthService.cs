@@ -58,4 +58,42 @@ return new LoginResponse
     RefreshToken = refreshToken.Token
 };
     }
+    public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+{
+    var refreshToken = await _context.RefreshTokens
+        .Include(x => x.User)
+        .FirstOrDefaultAsync(x => x.Token == request.RefreshToken);
+
+    if (refreshToken is null)
+    {
+        throw new UnauthorizedAccessException("Invalid refresh token.");
+    }
+
+    if (refreshToken.IsRevoked)
+    {
+        throw new UnauthorizedAccessException("Refresh token has been revoked.");
+    }
+
+    if (refreshToken.ExpiresAt <= DateTime.UtcNow)
+    {
+        throw new UnauthorizedAccessException("Refresh token has expired.");
+    }
+
+refreshToken.IsRevoked = true;
+refreshToken.RevokedAt = DateTime.UtcNow;
+
+var newRefreshToken = _refreshTokenService.Generate(refreshToken.User);
+
+_context.RefreshTokens.Add(newRefreshToken);
+
+await _context.SaveChangesAsync();
+
+var accessToken = _jwtService.GenerateToken(refreshToken.User);
+
+return new RefreshTokenResponse
+{
+    AccessToken = accessToken,
+    RefreshToken = newRefreshToken.Token
+};
+}
 }

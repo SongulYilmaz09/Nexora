@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nexora.Application.Features.Auth.Login;
+using Nexora.Application.Features.Auth.Refresh;
 
 namespace Nexora.API.Controllers;
 
@@ -18,6 +19,14 @@ public class AuthController : ControllerBase
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommand command)
+    {
+        var response = await _mediator.Send(command);
+
+        return Ok(response);
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(RefreshTokenCommand command)
     {
         var response = await _mediator.Send(command);
 
