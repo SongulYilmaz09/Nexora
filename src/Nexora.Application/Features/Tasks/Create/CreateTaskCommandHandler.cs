@@ -4,17 +4,20 @@ using Nexora.Domain.Entities;
 
 namespace Nexora.Application.Features.Tasks.Create;
 
-public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
+public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Guid>
 {
     private readonly ITaskRepository _taskRepository;
     private readonly IProjectRepository _projectRepository;
+    private readonly IActivityLogRepository _activityLogRepository;
 
-    public CreateTaskHandler(
+    public CreateTaskCommandHandler(
         ITaskRepository taskRepository,
-        IProjectRepository projectRepository)
+        IProjectRepository projectRepository,
+        IActivityLogRepository activityLogRepository)
     {
         _taskRepository = taskRepository;
         _projectRepository = projectRepository;
+        _activityLogRepository = activityLogRepository;
     }
 
     public async Task<Guid> Handle(
@@ -42,6 +45,18 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
         };
 
         await _taskRepository.AddAsync(task, cancellationToken);
+
+        await _activityLogRepository.AddAsync(
+            new ActivityLog
+            {
+                Id = Guid.NewGuid(),
+                UserId = project.OwnerId,
+                Action = "Created",
+                EntityName = "Task",
+                EntityId = task.Id,
+                CreatedAt = DateTime.UtcNow
+            },
+            cancellationToken);
 
         await _taskRepository.SaveChangesAsync(cancellationToken);
 

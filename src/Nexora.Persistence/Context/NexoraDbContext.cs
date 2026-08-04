@@ -16,6 +16,7 @@ public class NexoraDbContext : DbContext
 public DbSet<Comment> Comments => Set<Comment>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
+    public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
 public DbSet<Team> Teams => Set<Team>();
 public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
