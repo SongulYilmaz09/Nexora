@@ -18,6 +18,7 @@ public DbSet<Comment> Comments => Set<Comment>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
 public DbSet<Team> Teams => Set<Team>();
+public DbSet<Notification> Notifications => Set<Notification>();
 public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
