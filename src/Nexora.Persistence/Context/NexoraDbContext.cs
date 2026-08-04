@@ -16,21 +16,12 @@ public class NexoraDbContext : DbContext
 
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
-
+public DbSet<Team> Teams => Set<Team>();
+public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+{
+    base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Project>()
-            .HasOne(p => p.Owner)
-            .WithMany(u => u.OwnedProjects)
-            .HasForeignKey(p => p.OwnerId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<RefreshToken>()
-            .HasOne(rt => rt.User)
-            .WithMany(u => u.RefreshTokens)
-            .HasForeignKey(rt => rt.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-    }
+    modelBuilder.ApplyConfigurationsFromAssembly(typeof(NexoraDbContext).Assembly);
+}
 }

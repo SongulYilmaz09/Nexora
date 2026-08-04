@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nexora.Persistence.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nexora.Persistence.Migrations
 {
     [DbContext(typeof(NexoraDbContext))]
-    partial class NexoraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260803172954_AddTeamTable")]
+    partial class AddTeamTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,13 +148,11 @@ namespace Nexora.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
@@ -161,35 +162,6 @@ namespace Nexora.Persistence.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Teams");
-                });
-
-            modelBuilder.Entity("Nexora.Domain.Entities.TeamMember", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("JoinedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("TeamId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("TeamMembers");
                 });
 
             modelBuilder.Entity("Nexora.Domain.Entities.User", b =>
@@ -277,25 +249,6 @@ namespace Nexora.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Nexora.Domain.Entities.TeamMember", b =>
-                {
-                    b.HasOne("Nexora.Domain.Entities.Team", "Team")
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nexora.Domain.Entities.User", "User")
-                        .WithMany("Teams")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Nexora.Domain.Entities.Project", b =>
                 {
                     b.Navigation("Tasks");
@@ -303,8 +256,6 @@ namespace Nexora.Persistence.Migrations
 
             modelBuilder.Entity("Nexora.Domain.Entities.Team", b =>
                 {
-                    b.Navigation("Members");
-
                     b.Navigation("Projects");
                 });
 
@@ -313,8 +264,6 @@ namespace Nexora.Persistence.Migrations
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("RefreshTokens");
-
-                    b.Navigation("Teams");
                 });
 #pragma warning restore 612, 618
         }

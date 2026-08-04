@@ -13,4 +13,6 @@ public class User : BaseEntity
     public ICollection<Project> OwnedProjects { get; set; } = new List<Project>();
 
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
+    public ICollection<TeamMember> Teams { get; set; } = new List<TeamMember>();
 }

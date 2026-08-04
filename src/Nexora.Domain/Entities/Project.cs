@@ -13,7 +13,9 @@ public class Project : BaseEntity
     public bool IsCompleted { get; set; }
 
     public Guid OwnerId { get; set; }
+public Guid TeamId { get; set; }
 
+public Team Team { get; set; } = null!;
     public User Owner { get; set; } = null!;
     public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
 }
