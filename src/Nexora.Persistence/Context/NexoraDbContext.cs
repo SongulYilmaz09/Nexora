@@ -13,7 +13,7 @@ public class NexoraDbContext : DbContext
     public DbSet<User> Users => Set<User>();
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
-
+public DbSet<Comment> Comments => Set<Comment>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
 public DbSet<Team> Teams => Set<Team>();
