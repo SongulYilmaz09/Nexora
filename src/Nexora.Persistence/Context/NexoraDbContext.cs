@@ -20,6 +20,7 @@ public DbSet<Role> Roles => Set<Role>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
 public DbSet<Team> Teams => Set<Team>();
+public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 public DbSet<Notification> Notifications => Set<Notification>();
 public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
