@@ -11,9 +11,11 @@ public class NexoraDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
-
+public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 public DbSet<Comment> Comments => Set<Comment>();
+
+public DbSet<Role> Roles => Set<Role>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
