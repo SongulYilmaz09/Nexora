@@ -21,6 +21,8 @@ public class ProjectsController : ControllerBase
         _mediator = mediator;
     }
 
+[Authorize(Policy = "Project.Create")]
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateProjectCommand command)
     {

@@ -11,6 +11,8 @@ using Nexora.Infrastructure.Configuration;
 using Nexora.Infrastructure.Services;
 using Nexora.Persistence;
 using Nexora.Persistence.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Nexora.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,12 +61,18 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Project.Create", policy =>
+        policy.Requirements.Add(
+            new PermissionRequirement("Project.Create")));
+});
 
 // Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
