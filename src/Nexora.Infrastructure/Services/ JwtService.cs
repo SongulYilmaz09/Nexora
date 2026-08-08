@@ -28,6 +28,10 @@ public class JwtService : IJwtService
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+        if (user.Role is not null)
+{
+    claims.Add(new Claim(ClaimTypes.Role, user.Role.Name));
+}
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_jwtSettings.Key));

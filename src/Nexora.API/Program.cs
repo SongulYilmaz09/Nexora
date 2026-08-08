@@ -92,7 +92,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Global Exception Middleware
-app.UseMiddleware<GlobalExceptionMiddleware>();
+//app.UseMiddleware<GlobalExceptionMiddleware>();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

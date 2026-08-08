@@ -26,8 +26,9 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(x => x.Email == request.Email);
+       var user = await _context.Users
+    .Include(x => x.Role)
+    .FirstOrDefaultAsync(x => x.Email == request.Email);
 
         if (user is null)
         {
@@ -61,8 +62,9 @@ return new LoginResponse
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
 {
     var refreshToken = await _context.RefreshTokens
-        .Include(x => x.User)
-        .FirstOrDefaultAsync(x => x.Token == request.RefreshToken);
+    .Include(x => x.User)
+        .ThenInclude(x => x.Role)
+    .FirstOrDefaultAsync(x => x.Token == request.RefreshToken);
 
     if (refreshToken is null)
     {
